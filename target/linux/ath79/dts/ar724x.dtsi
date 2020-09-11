@@ -64,6 +64,29 @@
 				#interrupt-cells = <2>;
 			};
 
+			pinmux: pinmux@18040028 {
+				compatible = "pinctrl-single";
+
+				reg = <0x18040028 0x8>;
+
+				pinctrl-single,bit-per-mux;
+				pinctrl-single,register-width = <32>;
+				pinctrl-single,function-mask = <0x1>;
+				#pinctrl-cells = <2>;
+
+				jtag_disable_pins: pinmux_jtag_disable_pins {
+					pinctrl-single,bits = <0x0 0x1 0x1>;
+				};
+
+				switch_led_disable_pins: pinmux_switch_led_disable_pins {
+					pinctrl-single,bits = <0x0 0x0 0xf8>;
+				};
+
+				clks_disable_pins: pinmux_clks_disable_pins {
+					pinctrl-single,bits = <0x0 0x0 0x81f00>;
+				};
+			};
+
 			pll: pll-controller@18050000 {
 				compatible = "qca,ar7240-pll", "syscon";
 				reg = <0x18050000 0x3c>;
@@ -106,6 +129,9 @@
 					  0x1000000 0 0x00000000 0x0000000 0 0x000001>;		/* io space */
 				interrupt-parent = <&cpuintc>;
 				interrupts = <2>;
+
+				resets = <&rst 6>, <&rst 7>;
+				reset-names = "hc", "phy";
 
 				interrupt-controller;
 				#interrupt-cells = <1>;

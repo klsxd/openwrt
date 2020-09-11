@@ -1,4 +1,3 @@
-#!/bin/sh
 #
 # Copyright (C) 2017 OpenWrt.org
 #
@@ -26,10 +25,7 @@ platform_do_upgrade() {
 	# stage2 directly but need to refactor nand_upgrade_success
 	# for this to work.
 	#   Also the nand functions don't allow url to be used
-	nand_do_upgrade $1
-}
 
-platform_nand_pre_upgrade() {
 	local board=$(board_name)
 
 	case "$board" in
@@ -48,9 +44,6 @@ platform_nand_pre_upgrade() {
 		echo "Upgrading partition $CI_UBIPART (/dev/mtd$(find_mtd_index $CI_UBIPART))"
 		;;
 	esac
-}
 
-blink_led() {
-	. /etc/diag.sh; set_state upgrade
+	nand_do_upgrade $1
 }
-append sysupgrade_pre_upgrade blink_led
